@@ -1,0 +1,32 @@
+/* Reset default styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body,
+h1,
+p {
+    margin: 0;
+    padding: 0;
+
+
+}
+
+/* Set font and background color */
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--main-background);
+    background-position: center;
+    background-size: cover;
+}
+
+
+
+:root {
+    --main-background: #161515;
+    --top-half: #D9D9D9;
+    --bottom-half: #C3C3C3;
+    --main-text: #000000;
+}
