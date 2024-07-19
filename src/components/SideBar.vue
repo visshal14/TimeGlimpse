@@ -59,7 +59,7 @@
             <img @click="newBackground" class="background-image imported" v-for="n in importedBackground"
                 v-bind:src="`${n}`" alt="" />
             <img @click="newBackground" class="background-image" v-for="n in backgroundCount"
-                v-bind:src="`https://drive.google.com/thumbnail?id=${Background[n - 1]?.split('/')[5]}&export=download`"
+                v-bind:src="`https://drive.google.com/thumbnail?id=${BackgroundMain.Background[n - 1]?.split('/')[5]}&export=download`"
                 alt="" />
 
             <button @click="loadMore" class="btn-selection load-more">Load More</button>
@@ -73,7 +73,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, reactive } from 'vue';
 import Background from '../assets/background.json'
 import { addDataToLocalStorage, getDataFromLocalStorage } from "../assets/localStorage"
 
@@ -82,11 +82,12 @@ const props = defineProps(['isDateShow', 'isSideBar'])
 const backgroundCount = ref(4)
 const importedBackground = ref([])
 const imageUpload = ref(null)
-
 const currentBackgroundColor = ref(" #161515")
 const currentTextColor = ref("#000000")
 const currentTopFlipColor = ref("#D9D9D9")
 const currentBottomFlipColor = ref("#C3C3C3")
+
+const BackgroundMain = reactive({ Background })
 
 
 const defaultColors = {
@@ -100,6 +101,7 @@ const defaultColors = {
 
 onMounted(() => {
 
+    fetchJsonFile()
 
     getDataFromLocalStorage("backgroundColor") ? currentBackgroundColor.value = getDataFromLocalStorage("backgroundColor") : currentBackgroundColor.value = defaultColors.backgroundColor
     getDataFromLocalStorage("textColor") ? currentTextColor.value = getDataFromLocalStorage("textColor") : currentTextColor.value = defaultColors.textColor
@@ -127,8 +129,9 @@ function onChangeImageUpload() {
 }
 
 function loadMore() {
-    if (backgroundCount.value >= Background.length) return
-    backgroundCount.value += 4
+    if (backgroundCount.value >= BackgroundMain.Background.length) return
+    else if (backgroundCount.value + 4 >= BackgroundMain.Background.length) backgroundCount.value = BackgroundMain.Background.length
+    else backgroundCount.value += 4
 }
 function addBackground() {
     imageUpload.value.click()
@@ -184,7 +187,23 @@ function resetColors() {
 }
 
 
+async function fetchJsonFile() {
+    try {
 
+        const response = await fetch("https://res.cloudinary.com/dwnoofnah/raw/upload/v1721328026/timeglimpse_background.json");
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch JSON file');
+        }
+        const data = await response.json();
+        BackgroundMain.Background = data
+
+
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
 
 
 </script>

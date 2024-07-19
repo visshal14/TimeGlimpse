@@ -88,7 +88,7 @@ function headerShow() {
     isHeader.value = true
     setTimeout(() => {
         isHeader.value = false
-    }, 2000)
+    }, 5000)
 }
 
 
