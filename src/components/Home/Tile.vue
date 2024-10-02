@@ -25,8 +25,11 @@
 
 import { reactive, ref } from 'vue';
 import { watch } from 'vue';
-const props = defineProps(['is24Hour', 'mainData', 'clockSize'])
+import { useStore } from 'vuex';
+const props = defineProps(['is24Hour', 'mainData'])
 
+
+const store = useStore()
 let showTopFlip = ref(false)
 let showBottomFlip = ref(false)
 
@@ -125,9 +128,9 @@ watch(() => props.mainData, (newValue, oldValue) => {
 .top-flip,
 .bottom-flip {
 
-    height: v-bind('`${props.clockSize}px`');
-    font-size:v-bind('`${props.clockSize}px`');
-    padding: v-bind('`${props.clockSize / 2}px`');
+    height: v-bind('`${store.state.clockSize}px`');
+    font-size:v-bind('`${store.state.clockSize}px`');
+    padding: v-bind('`${store.state.clockSize / 2}px`');
     line-height: 1;
     overflow: hidden;
     border-radius: 5px;

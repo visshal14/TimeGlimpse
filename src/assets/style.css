@@ -20,6 +20,7 @@ body {
     background: var(--main-background);
     background-position: center;
     background-size: cover;
+    /* overflow-x: hidden; */
 }
 
 
@@ -29,4 +30,6 @@ body {
     --top-half: #D9D9D9;
     --bottom-half: #C3C3C3;
     --main-text: #000000;
+    --contentBackground: rgba(255, 255, 255, 0.4);
+    --newTileBackground: rgba(255, 255, 255, 0.1)
 }
