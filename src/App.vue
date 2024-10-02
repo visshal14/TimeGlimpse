@@ -1,60 +1,49 @@
 <template>
-    <Header v-if="isHeader" @open-sidebar="openSideBar" />
-    <div class="main-container">
-        <div class="time-container">
-            <div class="tiles-div">
-                <Tile v-bind:mainData="`${Math.floor(hours / 10)}`" v-bind:clockSize="clockSize" />
-                <Tile v-bind:mainData="`${Math.floor(hours % 10)}`" v-bind:clockSize="clockSize" />
-            </div>
-            <div class="tiles-div separator-div">
-                <div>
-
-                </div>
-                <div>
-
-                </div>
-            </div>
-            <div class="tiles-div">
-                <Tile v-bind:mainData="`${Math.floor(minutes / 10)}`" v-bind:clockSize="clockSize" />
-                <Tile v-bind:mainData="`${Math.floor(minutes % 10)}`" v-bind:clockSize="clockSize" />
-            </div>
-            <div class="tiles-div separator-div">
-                <div>
-
-                </div>
-                <div>
-
-                </div>
-            </div>
-            <div class="tiles-div">
-                <Tile v-bind:mainData="`${Math.floor(seconds / 10)}`" v-bind:clockSize="clockSize" />
-                <Tile v-bind:mainData="`${Math.floor(seconds % 10)}`" v-bind:clockSize="clockSize" />
-            </div>
-            <div v-if="!is24Hour" class="tiles-div">
-                <Tile is24Hour="is24Hour" v-bind:mainData="`${clockFormat[0]}`" />
-                <Tile is24Hour="is24Hour" v-bind:mainData="`${clockFormat[1]}`" />
-            </div>
-        </div>
-
-
-        <SideBar @clock-format="changeClockFormat" @show-date="changeShowDate" @clock-style="changeStyle"
-            @increase-clock-size="increaseClockSize" @decrease-clock-size="decreaseClockSize" :isDateShow="showDate"
-            :isSideBar="isSideBarOpen" @close-sidebar="closeSideBar" />
-
-        <!-- <button v-if="isHeader" @click="enterExitFullScreen" class="full-screen-btn">{{ isFullScreen ?
-            'Exit Full Screen' : 'Enter Full Screen' }}</button> -->
+    <div class="wrapper">
+        <Header v-if="isHeader" />
+        <router-view />
+        <Footer></Footer>
     </div>
-</template>
 
+</template>
 <script setup>
+import { onMounted, ref } from 'vue'
+import { Footer, Header } from './Index/ComponentIndex';
+let isHeader = ref(false)
+
+
+onMounted(() => {
+    window.addEventListener("mousemove", headerShow)
+})
+
+function headerShow() {
+    isHeader.value = true
+    setTimeout(() => {
+        isHeader.value = false
+    }, 5000)
+}
+
+
+</script>
+
+<style scoped>
+.wrapper {
+    width: 100%;
+    overflow-x: hidden;
+}
+</style>
+
+<!-- <script setup>
 import Header from "./components/Header.vue"
 import Tile from './components/Tile.vue'
 import SideBar from './components/SideBar.vue'
+import Footer from "./components/Footer.vue"
 
 
 import { onMounted, onUnmounted, ref } from 'vue'
 import { reactive } from 'vue'
 import { addDataToLocalStorage, getDataFromLocalStorage } from "./assets/localStorage"
+import Home from "./components/Home.vue"
 
 const is24Hour = ref(false)
 const showDate = ref(false)
@@ -173,9 +162,25 @@ function decreaseClockSize() {
 //     }
 // }
 
-</script>
+</script> -->
 
-<style scoped>
+<!-- <style scoped>
+.wrapper {
+
+    display: flex;
+    justify-content: space-between;
+    min-width: 100vw;
+    min-height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
 .main-container {
     display: flex;
     justify-content: space-between;
@@ -235,4 +240,4 @@ function decreaseClockSize() {
     font-size: 1rem;
     font-weight: 600;
 }
-</style>
+</style> -->
